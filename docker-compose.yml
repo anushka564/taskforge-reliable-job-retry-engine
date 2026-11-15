@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: taskforge-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: taskforge
+      POSTGRES_USER: taskforge
+      POSTGRES_PASSWORD: taskforge_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - taskforge_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskforge -d taskforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  taskforge_data:
